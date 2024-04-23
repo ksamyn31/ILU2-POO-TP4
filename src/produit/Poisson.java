@@ -1,15 +1,15 @@
 package produit;
 
 public class Poisson extends Produit {
-	String date;
-	String nom = "poisson";
-	
-	public Poisson(String date, String nom) {
-		super(nom);
-		description(nom);
-	}
-	
-	public void description(String nom) {
-		System.out.println(nom+" pêchés "+date+".");
-	}
+    private String datePeche;
+
+    public Poisson(String datePeche) {
+        super("poisson");
+        this.datePeche = datePeche;
+    }
+
+    @Override
+    public String decrireProduit() {
+        return "Poisson pêché le " + datePeche;
+    }
 }

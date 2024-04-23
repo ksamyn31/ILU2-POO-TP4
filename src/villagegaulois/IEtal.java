@@ -4,7 +4,6 @@ import personnages.Gaulois;
 import produit.Produit;
 
 public interface IEtal {
-	
 
 	boolean isEtalOccupe();
 
@@ -14,7 +13,7 @@ public interface IEtal {
 
 	Produit getProduit();
 
-	void occuperEtal(Gaulois vendeur, String produit, int quantite);
+	void occuperEtal(Gaulois vendeur, Produit produit, int quantite);
 
 	boolean contientProduit(String produit);
 
@@ -30,6 +29,9 @@ public interface IEtal {
 	 *         vendu [2] : quantité de produit à vendre au début du marché [4] :
 	 *         quantité de produit vendu
 	 */
+
 	String[] etatEtal();
+	
+	
 
 }

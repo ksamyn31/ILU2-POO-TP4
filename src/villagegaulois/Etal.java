@@ -3,30 +3,35 @@ package villagegaulois;
 import personnages.Gaulois;
 import produit.Produit;
 
-public class Etal implements IEtal<Produit> {
+public class Etal implements IEtal<Produit>, IEtal {
 	private Gaulois vendeur;
 	private Produit produit;
 	private int quantiteDebutMarche;
 	private int quantite;
 	private boolean etalOccupe = false;
 
+	@Override
 	public boolean isEtalOccupe() {
 		return etalOccupe;
 	}
 
+	@Override
 	public Gaulois getVendeur() {
 		return vendeur;
 	}
 
+	@Override
 	public int getQuantite() {
 		return quantite;
 	}
 
 
+	@Override
 	public Produit getProduit() {
 		return produit;
 	}
 
+	@Override
 	public void occuperEtal(Gaulois vendeur, Produit produit, int quantite) {
 		this.vendeur = vendeur;
 		this.produit = (P)produit;
@@ -35,25 +40,37 @@ public class Etal implements IEtal<Produit> {
 		etalOccupe = true;
 	}
 
+	@Override
+	public int contientProduit(String produit, int quantiteSouhaitee) {
+	    int quantiteAVendre = 0;
+	    if (nbProduit != 0 && this.produits[0].getNom().equals(produit)) {
+	        if (nbProduit >= quantiteSouhaitee) {
+	            quantiteAVendre = quantiteSouhaitee;
+	        } else {
+	            quantiteAVendre = nbProduit;
+	        }
+	    }
+	    return quantiteAVendre;
+	}
 
-	public boolean contientProduit(String produit) {
-		return this.produit.equals(produit);
+	@Override
+	public double acheterProduit(int quantiteSouhaite) {
+	    double prixPaye = 0;
+	    for (int i = nbProduit - 1; i > nbProduit - quantiteSouhaite - 1 || i > 1; i--) {
+	        prixPaye += produits[i].calculerPrix(prix);
+	    }
+	    if (nbProduit >= quantiteSouhaite) {
+	        nbProduit -= quantiteSouhaite;
+	    } else {
+	        nbProduit = 0;
+	    }
+	    return prixPaye;
 	}
 
 
-	public int acheterProduit(int quantiteAcheter) {
-		if (quantite == 0) {
-			quantiteAcheter = 0;
-		}
-		if (quantiteAcheter > quantite) {
-			quantiteAcheter = quantite;
-		}
-		if (etalOccupe) {
-			quantite -= quantiteAcheter;
-		}
-		return quantiteAcheter;
-	}
 
+
+	@Override
 	public void libererEtal() {
 		etalOccupe = false;
 	}
@@ -67,16 +84,21 @@ public class Etal implements IEtal<Produit> {
 	 *         quantité de produit vendu
 	 */
 	
-	public String[] etatEtal() {
-		String[] donneesVente = new String[5];
-		donneesVente[0] = String.valueOf(etalOccupe);
-		if (etalOccupe) {
-			donneesVente[1] = vendeur.getNom();
-			donneesVente[2] = produit.toString();
-			donneesVente[3] = String.valueOf(quantiteDebutMarche);
-			donneesVente[4] = String.valueOf(quantiteDebutMarche - quantite);
-		}
-		return donneesVente;
+	@Override
+	public String etatEtal() {
+	    StringBuilder chaine = new StringBuilder(vendeur.getNom());
+	    if (nbProduit > 0) {
+	        chaine.append(" vend ");
+	        chaine.append(nbProduit + " produits :");
+	        for (int i = 0; i < nbProduit; i++) {
+	            chaine.append("\n- " + produits[i].description());
+	        }
+	    } else {
+	        chaine.append(" n'a plus rien à vendre.");
+	    }
+	    chaine.append("\n");
+	    return chaine.toString();
 	}
 
+	
 }

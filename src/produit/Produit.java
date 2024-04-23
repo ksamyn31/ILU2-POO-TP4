@@ -1,17 +1,20 @@
 package produit;
+public class Produit implements IProduit {
+    private String nom;
 
-public abstract class Produit {
-	private String nom;
-	@SuppressWarnings("unused")
-	private enum unité {litre,gramme,kilogramme,centilitre, millilitre, piece};
-	
-	public Produit(String nom) {
-		this.nom=nom;
-	}
-	
-	public String toString() {
-		return nom;
-	}
-	
-	
+    public Produit(String nom) {
+        this.nom = nom;
+    }
+
+    @Override
+	public String getNom() {
+        return nom;
+    }
+
+    @Override
+	public String decrireProduit() {
+        return "Description du produit : " + nom;
+    }
 }
+
+
